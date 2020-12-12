@@ -7,7 +7,7 @@ class General {
     this.cardAreas = document.querySelectorAll('.block');
   }
 
-  startGame() {
+  setGameGonfig() {
     this.startButton.addEventListener('click', e => {
       e.preventDefault();
       this.startButton.classList.add('hidden');
@@ -20,7 +20,9 @@ class General {
       this.cardAreas.forEach(block => {
         block.classList.replace('block-preload', 'block-load');
       });
-      new Render(this.cardAreas).renderPaws();
+      const render = new Render(this.cardAreas);
+      render.renderCards();
+      new Game().startGame();
     });
   }
 
@@ -58,7 +60,7 @@ class Render {
     return setOfCoords;
   }
 
-  getPaw() {
+  getPawPrints() {
     const dots = Render.getCoordinates(this.firstDot, this.pawsQ);
     let template = ``;
     for (let i = 0; i < this.pawsQ; i++) {
@@ -68,19 +70,85 @@ class Render {
     }
     return template;
   }
+  getCards() {
 
-  getPawPrints() {
+    let template = `<div class="card">
+    <div class="face front">front</div>
+    <div class="face back">back</div>
+    </div>`;
+    return template;
+  }
+  renderBlock() {
     let template = ``;
     for (let i = 0; i < this.printsQ; i++) {
-      template += `<div class="paws">` + this.getPaw() + `</div>`;
+      template += `
+      <div class="wrap">
+      <div class="paws">` + this.getPawPrints() + `</div>
+      ` + this.getCards() + `</div>`
+
     }
     return template;
   }
-  renderPaws() {
+  renderCards() {
     this.areas.forEach(block => {
-      block.innerHTML = this.getPawPrints();
+      block.innerHTML = this.renderBlock();
     });
   }
-
 }
-new General('#start-game-btn', '.block').startGame();
+
+class Game {
+  constructor() {
+  //  this.showCard = document.querySelectorAll('.paws');
+    
+    this.cardState = false;
+  }
+
+
+  startGame() {
+
+    /*[].forEach.call(this.showCard, el => {
+      el.addEventListener('mouseover', e => {
+        console.log(e.target);
+      });
+  });*/
+ // this.showCard.forEach(e => {
+
+   // e.addEventListener('mouseover', e => {
+    //  e.preventDefault();
+      
+      //const cardElement = e.target.closest('.wrap').lastChild;
+      //
+   //   const cardElement = e.target.closest('.wrap').querySelector('.card');
+   //   cardElement.classList.remove('hidden');
+    //  this.animation(e.target.closest('.wrap').querySelector('.card'));
+      
+   // });
+
+   // e.addEventListener('click', e => {
+    //  e.preventDefault();
+    //  console.log('clicked');
+   //   this.cardState = true;
+  //  });
+
+    /*e.addEventListener('mouseout', e => {
+      e.preventDefault();
+      //console.log(this.cardState);
+
+
+      const cardElement = e.target.closest('.wrap').querySelector('.card');
+      cardElement.classList.add('hidden');
+      
+
+      // e.target.closest('.wrap').lastChild;
+      //cardElement.classList.add('hidden');
+      //console.log(cardElement);
+      
+    });
+    
+*/
+ // });
+
+  }
+}
+
+new General('#start-game-btn', '.block').setGameGonfig();
