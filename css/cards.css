@@ -1,21 +1,67 @@
+.card-img,
 .card {
-  position: absolute;
   width: 60px;
   height: 60px;
+}
+.card {
+  position: absolute;
   opacity: 0;
-  background-color: red;
   animation-duration: 9.5s;
-  animation-delay: 5s;
+  /*animation-delay: 5s;*/
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  transform-style: preserve-3d;
+}
+.card .face .card-text {
+  font-size: 10px;
+  margin-top: 35px;
+  transform: perspective(120px) translateZ(14px);
+}
+.card .face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  transform-style: preserve-3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  transition: 2s ease-in-out;
+  transform: perspective(120px) rotateY(0deg);
 }
 
-.block-0 .wrap:nth-child(1) .card{
+.card:hover .face.front, .card .face.back  {
+  background: url(../img/hogwarts.png) center / cover no-repeat;
+}
+.flip-front {
+  transform: perspective(120px) rotateY(180deg);
+}
+.card .face.back {
+  background: url(../img/hogwarts.png) center / cover no-repeat;
+   transform: perspective(120px) rotateY(180deg);
+}
+.flip-back {
+  transform: perspective(120px) rotateY(360deg);
+}
+/*.card:hover .face.back {
+  
+}*/
+.face.back .card-img {
+  backface-visibility: hidden;
+  transform: perspective(120px) translateZ(7px);
+}
+.block-0 .wrap:nth-child(1) .card {
+  /* background-color: tomato;
+  opacity: 1;
+  top: 70px;
+  left: 42px;*/
   animation-name: move-block-0-card-1, arise;
 }
 
 @keyframes move-block-0-card-1 {
-  0% {  
+  0% {
     top: 70px;
     left: 42px;
   }
@@ -25,12 +71,12 @@
   }
 }
 
-.block-0 .wrap:nth-child(2) .card{
+.block-0 .wrap:nth-child(2) .card {
   animation-name: move-block-0-card-2, arise;
 }
 
 @keyframes move-block-0-card-2 {
-  0% {  
+  0% {
     top: 154px;
     left: 54px;
   }
@@ -44,7 +90,7 @@
 }
 
 @keyframes move-block-0-card-3 {
-  0% {  
+  0% {
     top: 263px;
     left: 88px;
   }
@@ -57,7 +103,7 @@
   animation-name: move-block-1-card-1, arise;
 }
 @keyframes move-block-1-card-1 {
-  0% {  
+  0% {
     top: 30px;
     left: 30px;
   }
@@ -70,7 +116,7 @@
   animation-name: move-block-1-card-2, arise;
 }
 @keyframes move-block-1-card-2 {
-  0% {  
+  0% {
     top: 102px;
     left: 113px;
   }
@@ -83,7 +129,7 @@
   animation-name: move-block-1-card-3, arise;
 }
 @keyframes move-block-1-card-3 {
-  0% {  
+  0% {
     top: 274px;
     left: 81px;
   }
@@ -96,7 +142,7 @@
   animation-name: move-block-2-card-1, arise;
 }
 @keyframes move-block-2-card-1 {
-  0% {  
+  0% {
     top: 2px;
     left: 56px;
   }
@@ -109,7 +155,7 @@
   animation-name: move-block-2-card-2, arise;
 }
 @keyframes move-block-2-card-2 {
-  0% {  
+  0% {
     top: 214px;
     left: 33px;
   }
@@ -122,7 +168,7 @@
   animation-name: move-block-2-card-3, arise;
 }
 @keyframes move-block-2-card-3 {
-  0% {  
+  0% {
     top: 281px;
     left: 69px;
   }
@@ -135,7 +181,7 @@
   animation-name: move-block-3-card-1, arise;
 }
 @keyframes move-block-3-card-1 {
-  0% {  
+  0% {
     top: 30px;
     left: 24px;
   }
@@ -148,7 +194,7 @@
   animation-name: move-block-3-card-2, arise;
 }
 @keyframes move-block-3-card-2 {
-  0% {  
+  0% {
     top: 165px;
     left: 137px;
   }
@@ -161,7 +207,7 @@
   animation-name: move-block-3-card-3, arise;
 }
 @keyframes move-block-3-card-3 {
-  0% {  
+  0% {
     top: 266px;
     left: 2px;
   }
@@ -171,13 +217,14 @@
   }
 }
 @keyframes arise {
-  0%{
+  0% {
     opacity: 0;
   }
-  15%,85%{
+  15%,
+  85% {
     opacity: 1;
   }
-  100%{
+  100% {
     opacity: 0;
   }
 }

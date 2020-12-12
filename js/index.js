@@ -1,7 +1,6 @@
 'use strict';
 
 class General {
-
   constructor(startBtn) {
     this.startButton = document.querySelector(startBtn);
     this.cardAreas = document.querySelectorAll('.block');
@@ -25,11 +24,9 @@ class General {
       new Game().startGame();
     });
   }
-
 }
 
 class Render {
-
   constructor(areas) {
     this.areas = areas;
     this.firstDot = {
@@ -71,21 +68,26 @@ class Render {
     return template;
   }
   getCards() {
-
-    let template = `<div class="card">
-    <div class="face front">front</div>
-    <div class="face back">back</div>
+    let template = `<div class="card hidden">
+    <div class="face front"><span class="card-text">Stranger</span></div>
+    <div class="face back">
+    <img src="img/cat1.png" alt="cat1" class="card-img">
+    </div>
     </div>`;
     return template;
   }
   renderBlock() {
     let template = ``;
     for (let i = 0; i < this.printsQ; i++) {
-      template += `
+      template +=
+        `
       <div class="wrap">
-      <div class="paws">` + this.getPawPrints() + `</div>
-      ` + this.getCards() + `</div>`
-
+      <div class="paws">` +
+        this.getPawPrints() +
+        `</div>
+      ` +
+        this.getCards() +
+        `</div>`;
     }
     return template;
   }
@@ -98,56 +100,30 @@ class Render {
 
 class Game {
   constructor() {
-  //  this.showCard = document.querySelectorAll('.paws');
-    
+    this.showCard = document.querySelectorAll('.paws');
+    this.cards = document.querySelectorAll('.card');
     this.cardState = false;
   }
 
-
   startGame() {
 
-    /*[].forEach.call(this.showCard, el => {
-      el.addEventListener('mouseover', e => {
-        console.log(e.target);
+    this.showCard.forEach(e => {
+      e.addEventListener('mouseover', e => {
+        e.preventDefault();
+        const cardElement = e.target.closest('.wrap').querySelector('.card');
+        cardElement.classList.remove('hidden');
       });
-  });*/
- // this.showCard.forEach(e => {
 
-   // e.addEventListener('mouseover', e => {
-    //  e.preventDefault();
-      
-      //const cardElement = e.target.closest('.wrap').lastChild;
-      //
-   //   const cardElement = e.target.closest('.wrap').querySelector('.card');
-   //   cardElement.classList.remove('hidden');
-    //  this.animation(e.target.closest('.wrap').querySelector('.card'));
-      
-   // });
-
-   // e.addEventListener('click', e => {
-    //  e.preventDefault();
-    //  console.log('clicked');
-   //   this.cardState = true;
-  //  });
-
-    /*e.addEventListener('mouseout', e => {
-      e.preventDefault();
-      //console.log(this.cardState);
-
-
-      const cardElement = e.target.closest('.wrap').querySelector('.card');
-      cardElement.classList.add('hidden');
-      
-
-      // e.target.closest('.wrap').lastChild;
-      //cardElement.classList.add('hidden');
-      //console.log(cardElement);
-      
     });
-    
-*/
- // });
 
+    this.cards.forEach(e => {
+      e.addEventListener('click', e => {
+        e.preventDefault();
+        const cardElement = e.target.closest('.front');
+        cardElement.style.transform = 'perspective(120px) rotateY(180deg)';
+        cardElement.nextElementSibling.style.transform = 'perspective(120px) rotateY(360deg)';
+      });
+    });
   }
 }
 
