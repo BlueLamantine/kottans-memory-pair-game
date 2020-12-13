@@ -19,8 +19,7 @@ class General {
       this.cardAreas.forEach(block => {
         block.classList.replace('block-preload', 'block-load');
       });
-      const render = new Render(this.cardAreas);
-      render.renderCards();
+      new Render(this.cardAreas).renderCards();
       new Game().startGame();
     });
   }
@@ -28,48 +27,79 @@ class General {
 
 class Render {
   constructor(areas) {
+    this.cardsArray = [
+      {
+        name: 'pawtter',
+        path: 'img/cats/pawtter.png',
+      },
+      {
+        name: 'hairmeowne',
+        path: 'img/cats/hairmeowne.png',
+      },
+      {
+        name: 'ron',
+        path: 'img/cats/ron.png',
+      },
+      {
+        name: 'lord',
+        path: 'img/cats/lord.png',
+      },
+      {
+        name: 'sevepuss',
+        path: 'img/cats/sevepuss.png',
+      },
+      {
+        name: 'dumpurrdore',
+        path: 'img/cats/dumpurrdore.png',
+      },
+    ];
     this.areas = areas;
-    this.pawsQ = 10;
-    this.printsQ = 3;
+    this.pawsInBlock = 10;
+    this.cardsInBlock = 3;
+  }
+
+  shuffleCards() {
+    const shuffleArray = this.cardsArray.concat(this.cardsArray).sort(() => {
+      return 0.5 - Math.random();
+    });
+    const cardsBack = document.querySelectorAll('.back');
+    shuffleArray.forEach((data, cardIndex) => {
+      cardsBack[cardIndex].innerHTML = `
+      <img name="${data.name}" src="${data.path}" alt="cat" class="card-img">
+      `;
+    });
   }
 
   getPawPrints() {
     let template = ``;
-    for (let i = 0; i < this.pawsQ; i++) {
-      template += `
-      <i class="fa fa-paw paw"></i>
-      `;
+    for (let i = 0; i < this.pawsInBlock; i++) {
+      template += `<i class="fa fa-paw paw"></i>`;
     }
     return template;
   }
-  getCards() {
-    let template = `<div class="card">
-    <div class="face front"></div>
-    <div class="face back">
-    <img src="img/cat1.png" alt="cat1" class="card-img">
-    </div>
-    </div>`;
-    return template;
-  }
+
   renderBlock() {
     let template = ``;
-    for (let i = 0; i < this.printsQ; i++) {
-      template +=
-        `
+    for (let i = 0; i < this.cardsInBlock; i++) {
+      template += `
       <div class="wrap">
-      <div class="paws">` +
-        this.getPawPrints() +
-        `</div>
-      ` +
-        this.getCards() +
-        `</div>`;
+        <div class="paws">
+          ${this.getPawPrints()}
+        </div>
+        <div class="card">
+          <div class="face front"></div>
+          <div class="face back"></div>
+        </div>
+      </div>`;
     }
     return template;
   }
+
   renderCards() {
     this.areas.forEach(block => {
       block.innerHTML = this.renderBlock();
     });
+    this.shuffleCards();
   }
 }
 
@@ -77,21 +107,57 @@ class Game {
   constructor() {
     this.showCard = document.querySelectorAll('.paws');
     this.cards = document.querySelectorAll('.card');
-    this.cardState = false;
+    this.isOpen = false;
+  }
+
+  fetFlip (card) {
+    card.closest('.card').querySelector('.front').classList.toggle('open');
+    card.closest('.card').querySelector('.back').classList.toggle('open');
   }
 
   startGame() {
     this.cards.forEach(e => {
       e.addEventListener('click', e => {
         e.preventDefault();
-        const cardElement = e.target.closest('.front');
-       // cardElement.style.transform = 'perspective(120px) rotateY(180deg)';
-      //  cardElement.nextElementSibling.style.transform = 'perspective(120px) rotateY(360deg)';
-        cardElement.classList.add('flip-front');
-        cardElement.nextElementSibling.classList.add('flip-back');
+        const currentCard = e.target;
+        getFlip(currentCard);
+
       });
     });
   }
 }
+/*
+ currentCard.classList.add('open');
+        currentCard.nextElementSibling.classList.add('open');
 
+        let openedCards = Array.from(document.querySelectorAll('.front.open'));
+        console.log('otkrutue', openedCards);
+
+        if (openedCards.length === 2) {
+          let openedCardsNames = openedCards.map(card =>
+            card.nextElementSibling.firstElementChild.getAttribute('name')
+          );
+          console.log(
+            openedCardsNames,
+            openedCardsNames.every((name, i, arr) => name === arr[0])
+          );
+
+          if (
+            (openedCardsNames,
+            openedCardsNames.every((name, i, arr) => name === arr[0]))
+          ) {
+            console.log('odinakovue!');
+          } else {
+            console.log('net, zakrut!', openedCards);
+
+              openedCards.map(card => {
+                card.classList.remove('open');
+                card.nextElementSibling.remove('open');
+              });
+ 
+            openedCards = [];
+            console.log('zakruto', openedCards);
+          }
+        }
+*/
 new General('#start-game-btn', '.block').setGameGonfig();

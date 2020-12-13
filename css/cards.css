@@ -28,24 +28,26 @@
   align-items: center;
   backface-visibility: hidden;
   transition: 2s ease-in-out;
- /* transform: perspective(120px) rotateY(0deg);*/
+  transform: perspective(120px) rotateY(0deg);
 }
 
 .card .face.front, .card .face.back  {
-  background: url(../img/card_bcg1.png) center / cover no-repeat;
+  background: url(../img/card_bcg.png) center / cover no-repeat;
 }
-.flip-front {
+.card .face.front.open {
   transform: perspective(120px) rotateY(180deg);
 }
 .card .face.back {
   transform: perspective(120px) rotateY(180deg);
 }
-
+.card:hover .face.front {
+  cursor: url(../img/cursor_pointer.png), pointer;
+}
 .face.back .card-img {
   backface-visibility: hidden;
   transform: perspective(120px) translateZ(7px);
 }
-.card .face.back.flip-back {
+.card .face.back.open {
   transform: perspective(120px) rotateY(360deg);
 }
 .block-0 .wrap:nth-child(1) .card {
