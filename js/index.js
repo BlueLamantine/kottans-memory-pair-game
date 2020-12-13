@@ -107,6 +107,12 @@ class Game {
   constructor() {
     this.cards = document.querySelectorAll('.card');
     this.openCardsCount = 0;
+    this.movesCount = 0;
+    this.cardMatching = 2;
+    this.animationDelay = {
+      flip : 300,
+      disappear : 450
+    };
   }
   getDisappear(card) {
     card.closest('.wrap').classList.add('hidden');
@@ -120,11 +126,14 @@ class Game {
     this.cards.forEach(e => {
       e.addEventListener('click', e => {
         e.preventDefault();
+        this.movesCount++;
         const currentCard = e.target;
         this.openCardsCount++;
-        if (this.openCardsCount <= 2) {
+        if (this.openCardsCount <= this.cardMatching) {
+          console.log(this.movesCount++);
+          this.movesCount--;
           this.getFlip(currentCard);
-          if (this.openCardsCount == 2) {
+          if (this.openCardsCount == this.cardMatching) {
             let openedCards = Array.from(
               document.querySelectorAll('.front.open')
             );
@@ -133,8 +142,8 @@ class Game {
             );
             if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
               openedCards.forEach(card => {
-                setTimeout(this.getFlip, 300, card);
-                setTimeout(this.getDisappear, 300, card);
+                setTimeout(this.getFlip, this.animationDelay.flip, card);
+                setTimeout(this.getDisappear, this.animationDelay.disappear, card);
               });
             }
           }
@@ -143,11 +152,12 @@ class Game {
             document.querySelectorAll('.front.open')
           );
           openedCards.forEach(card => {
-            setTimeout(this.getFlip, 300, card);
+            setTimeout(this.getFlip, this.animationDelay.flip, card);
           });
           this.getFlip(currentCard);
           this.openCardsCount = 1;
         }
+        document.querySelector('#counter').innerText = this.movesCount;
       });
     });
   }
