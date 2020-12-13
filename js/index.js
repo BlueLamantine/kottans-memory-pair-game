@@ -4,52 +4,23 @@ class General {
   constructor(startBtn) {
     this.startButton = document.querySelector(startBtn);
     this.cardAreas = document.querySelectorAll('.block');
-    this.restartButton = document.querySelector('#restart-game-btn');
-    this.timerReady = false;
-    this.gameTheme = new Audio('./audio/game_theme.mp3')
+    this.gameTheme = new Audio('./audio/game_theme.mp3');
   }
 
-  timer() {
-    if (this.timerReady == true) {
-      let timer = 0;
-      let hour = 0;
-      let minute = 0;
-      let second = 0;
-      window.setInterval (() => {
-        ++timer;
-        hour = Math.floor(timer / 3600);
-        minute = Math.floor((timer - hour * 3600) / 60);
-        second = timer - hour * 3600 - minute * 60;
-        if (hour < 10) hour = '0' + hour;
-        if (minute < 10) minute = '0' + minute;
-        if (second < 10) second = '0' + second;
-        document.querySelector('#timer').innerHTML = hour + ':' + minute + ':' + second;
-        if(this.timerReady == false) {
-        document.querySelector('#timer').innerHTML = "00:00:00";
-        timer = 0;
-        hour = 0;
-        minute = 0;
-        second = 0;
-        return;
-        }
-      }, 1000);
-    }
-  }
-  playAudio () {
+  playAudio() {
     this.gameTheme.loop = true;
     this.gameTheme.volume = 0.2;
     this.gameTheme.muted = false;
     this.gameTheme.play();
-    
+
     document.querySelector('#musicControl').addEventListener('click', e => {
       e.preventDefault();
-      if(this.gameTheme.muted) {
+      if (this.gameTheme.muted) {
         this.gameTheme.muted = false;
-        e.target.classList.replace('fa-volume-off','fa-volume-up');
-      }
-      else {
+        e.target.classList.replace('fa-volume-off', 'fa-volume-up');
+      } else {
         this.gameTheme.muted = true;
-        e.target.classList.replace('fa-volume-up','fa-volume-off');
+        e.target.classList.replace('fa-volume-up', 'fa-volume-off');
       }
     });
   }
@@ -68,10 +39,7 @@ class General {
       });
       new Render(this.cardAreas).renderCards();
       new Game().startGame();
-      this.timerReady = true;
-      this.timer();
       this.playAudio();
-
     });
   }
 }
@@ -161,25 +129,58 @@ class Game {
     this.movesCount = 0;
     this.cardMatching = 2;
     this.animationDelay = {
-      flip : 300,
-      disappear : 520
+      flip: 300,
+      disappear: 520,
     };
+    this.finishedCards = [];
+    this.allCards = 12;
+    this.timerReady = false;
+    this.time = '';
   }
 
-  
-  getDisappear(card) {
-    card.closest('.wrap').classList.add('hidden');
+  timer() {
+    let timer = 0;
+    let hour = 0;
+    let minute = 0;
+    let second = 0;
+
+    if (this.timerReady == true) {
+      window.setInterval(() => {
+        ++timer;
+        hour = Math.floor(timer / 3600);
+        minute = Math.floor((timer - hour * 3600) / 60);
+        second = timer - hour * 3600 - minute * 60;
+        if (hour < 10) hour = '0' + hour;
+        if (minute < 10) minute = '0' + minute;
+        if (second < 10) second = '0' + second;
+        this.time = `${hour} : ${minute} : ${second}`;
+        document.querySelector('#timer').innerHTML = this.time;
+      }, 1000);
+    }
   }
+
+  getDisappear(card, moves, time, cards) {
+    card.closest('.wrap').classList.add('hidden');
+    this.finishedCards = Array.from(document.querySelectorAll('.wrap.hidden'));
+    if (this.finishedCards.length == cards) {
+      alert(
+        `Congratulations!!! You broke the spell! ` +
+        `With ${moves} moves and your time is ${time}.`
+      );
+    }
+  }
+
   getFlip(card) {
     card.closest('.card').querySelector('.front').classList.toggle('open');
     card.closest('.card').querySelector('.back').classList.toggle('open');
   }
 
   startGame() {
+    this.timerReady = true;
+    this.timer();
     this.cards.forEach(e => {
       e.addEventListener('click', e => {
         e.preventDefault();
-        
         this.movesCount++;
         const currentCard = e.target;
         this.openCardsCount++;
@@ -196,7 +197,14 @@ class Game {
             if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
               openedCards.forEach(card => {
                 setTimeout(this.getFlip, this.animationDelay.flip, card);
-                setTimeout(this.getDisappear, this.animationDelay.disappear, card);
+                setTimeout(
+                  this.getDisappear,
+                  this.animationDelay.disappear,
+                  card,
+                  this.movesCount,
+                  this.time,
+                  this.allCards
+                );
               });
             }
           }
