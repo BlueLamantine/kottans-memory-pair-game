@@ -116,3 +116,9 @@ a:hover, .btn:hover {
 .hidden {
   display: none;
 }
+.music {
+  font-size: 25px;
+}
+.music:hover {
+  cursor: url(../img/cursor_pointer.png), pointer;
+}
