@@ -27,7 +27,7 @@
   justify-content: center;
   align-items: center;
   backface-visibility: hidden;
-  transition: 2s ease-in-out;
+  transition: 0.3s ease-in-out;
   transform: perspective(120px) rotateY(0deg);
 }
 
@@ -40,6 +40,7 @@
 .card .face.back {
   transform: perspective(120px) rotateY(180deg);
 }
+
 .card:hover .face.front {
   cursor: url(../img/cursor_pointer.png), pointer;
 }

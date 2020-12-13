@@ -105,12 +105,13 @@ class Render {
 
 class Game {
   constructor() {
-    this.showCard = document.querySelectorAll('.paws');
     this.cards = document.querySelectorAll('.card');
-    this.isOpen = false;
+    this.openCardsCount = 0;
   }
-
-  fetFlip (card) {
+  getDisappear(card) {
+    card.closest('.wrap').classList.add('hidden');
+  }
+  getFlip(card) {
     card.closest('.card').querySelector('.front').classList.toggle('open');
     card.closest('.card').querySelector('.back').classList.toggle('open');
   }
@@ -120,44 +121,36 @@ class Game {
       e.addEventListener('click', e => {
         e.preventDefault();
         const currentCard = e.target;
-        getFlip(currentCard);
-
+        this.openCardsCount++;
+        if (this.openCardsCount <= 2) {
+          this.getFlip(currentCard);
+          if (this.openCardsCount == 2) {
+            let openedCards = Array.from(
+              document.querySelectorAll('.front.open')
+            );
+            let openedCardsNames = openedCards.map(card =>
+              card.nextElementSibling.firstElementChild.getAttribute('name')
+            );
+            if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
+              openedCards.forEach(card => {
+                setTimeout(this.getFlip, 300, card);
+                setTimeout(this.getDisappear, 300, card);
+              });
+            }
+          }
+        } else {
+          let openedCards = Array.from(
+            document.querySelectorAll('.front.open')
+          );
+          openedCards.forEach(card => {
+            setTimeout(this.getFlip, 300, card);
+          });
+          this.getFlip(currentCard);
+          this.openCardsCount = 1;
+        }
       });
     });
   }
 }
-/*
- currentCard.classList.add('open');
-        currentCard.nextElementSibling.classList.add('open');
 
-        let openedCards = Array.from(document.querySelectorAll('.front.open'));
-        console.log('otkrutue', openedCards);
-
-        if (openedCards.length === 2) {
-          let openedCardsNames = openedCards.map(card =>
-            card.nextElementSibling.firstElementChild.getAttribute('name')
-          );
-          console.log(
-            openedCardsNames,
-            openedCardsNames.every((name, i, arr) => name === arr[0])
-          );
-
-          if (
-            (openedCardsNames,
-            openedCardsNames.every((name, i, arr) => name === arr[0]))
-          ) {
-            console.log('odinakovue!');
-          } else {
-            console.log('net, zakrut!', openedCards);
-
-              openedCards.map(card => {
-                card.classList.remove('open');
-                card.nextElementSibling.remove('open');
-              });
- 
-            openedCards = [];
-            console.log('zakruto', openedCards);
-          }
-        }
-*/
 new General('#start-game-btn', '.block').setGameGonfig();
