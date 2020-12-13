@@ -23,8 +23,8 @@
   transform: rotate(215deg);
 }
 .block-0 .wrap:nth-child(3) .paws {
-  top: 318px;
-  left: 53px;
+  top: 290px;
+  left: 46px;
   transform: rotate(-238deg);
 }
 .block-1 .wrap:nth-child(1) .paws {
@@ -73,34 +73,54 @@
   transform: rotate(-361deg);
 }
 .paw:nth-child(1) {
-  animation-delay: 3s;
-}
-.paw:nth-child(2) {
-  animation-delay: 3.5s;
-}
-.paw:nth-child(3) {
-  animation-delay: 4s;
-}
-.paw:nth-child(4) {
-  animation-delay: 4.5s;
-}
-.paw:nth-child(5) {
+  top: 65px;
+  left: 20px;
   animation-delay: 5s;
 }
-.paw:nth-child(6) {
+.paw:nth-child(2) {
+  top: 55px;
+  left: 20px;
   animation-delay: 5.5s;
 }
-.paw:nth-child(7) {
+.paw:nth-child(3) {
+  top: 55px;
+  left: 30px;
   animation-delay: 6s;
 }
-.paw:nth-child(8) {
+.paw:nth-child(4) {
+  top: 45px;
+  left: 30px;
   animation-delay: 6.5s;
 }
-.paw:nth-child(9) {
+.paw:nth-child(5) {
+  top: 45px;
+  left: 40px;
   animation-delay: 7s;
 }
-.paw:nth-child(10) {
+.paw:nth-child(6) {
+  top: 35px;
+  left: 40px;
   animation-delay: 7.5s;
+}
+.paw:nth-child(7) {
+  top: 35px;
+  left: 50px;
+  animation-delay: 8s;
+}
+.paw:nth-child(8) {
+  top: 25px;
+  left: 50px;
+  animation-delay: 8.5s;
+}
+.paw:nth-child(9) {
+  top: 25px;
+  left: 60px;
+  animation-delay: 9s;
+}
+.paw:nth-child(10) {
+  top: 15px;
+  left: 60px;
+  animation-delay: 9.5s;
 }
 @-webkit-keyframes fade {
   25% {

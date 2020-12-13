@@ -29,47 +29,22 @@ class General {
 class Render {
   constructor(areas) {
     this.areas = areas;
-    this.firstDot = {
-      x: 20,
-      y: 65,
-    };
     this.pawsQ = 10;
     this.printsQ = 3;
   }
 
-  static getCoordinates(dot, quantity) {
-    let setOfCoords = [];
-    setOfCoords.push({
-      top: dot.y,
-      left: dot.x,
-    });
-    for (let i = 0; i < quantity - 1; i++) {
-      let temp = {};
-      if (i % 2 == 0) {
-        temp.top = setOfCoords[i].top - 10;
-        temp.left = setOfCoords[i].left;
-      } else {
-        temp.top = setOfCoords[i].top;
-        temp.left = setOfCoords[i].left + 10;
-      }
-      setOfCoords.push(temp);
-    }
-    return setOfCoords;
-  }
-
   getPawPrints() {
-    const dots = Render.getCoordinates(this.firstDot, this.pawsQ);
     let template = ``;
     for (let i = 0; i < this.pawsQ; i++) {
       template += `
-      <i class="fa fa-paw paw" style="top: ${dots[i].top}px; left: ${dots[i].left}px;"></i>
+      <i class="fa fa-paw paw"></i>
       `;
     }
     return template;
   }
   getCards() {
-    let template = `<div class="card hidden">
-    <div class="face front"><span class="card-text">Stranger</span></div>
+    let template = `<div class="card">
+    <div class="face front"></div>
     <div class="face back">
     <img src="img/cat1.png" alt="cat1" class="card-img">
     </div>
@@ -106,22 +81,14 @@ class Game {
   }
 
   startGame() {
-
-    this.showCard.forEach(e => {
-      e.addEventListener('mouseover', e => {
-        e.preventDefault();
-        const cardElement = e.target.closest('.wrap').querySelector('.card');
-        cardElement.classList.remove('hidden');
-      });
-
-    });
-
     this.cards.forEach(e => {
       e.addEventListener('click', e => {
         e.preventDefault();
         const cardElement = e.target.closest('.front');
-        cardElement.style.transform = 'perspective(120px) rotateY(180deg)';
-        cardElement.nextElementSibling.style.transform = 'perspective(120px) rotateY(360deg)';
+       // cardElement.style.transform = 'perspective(120px) rotateY(180deg)';
+      //  cardElement.nextElementSibling.style.transform = 'perspective(120px) rotateY(360deg)';
+        cardElement.classList.add('flip-front');
+        cardElement.nextElementSibling.classList.add('flip-back');
       });
     });
   }

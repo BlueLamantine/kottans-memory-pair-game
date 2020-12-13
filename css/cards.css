@@ -7,14 +7,13 @@
   position: absolute;
   opacity: 0;
   animation-duration: 9.5s;
-  /*animation-delay: 5s;*/
+  animation-delay: 5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   transform-style: preserve-3d;
 }
 .card .face .card-text {
   font-size: 10px;
-  margin-top: 35px;
   transform: perspective(120px) translateZ(14px);
 }
 .card .face {
@@ -29,60 +28,52 @@
   align-items: center;
   backface-visibility: hidden;
   transition: 2s ease-in-out;
-  transform: perspective(120px) rotateY(0deg);
+ /* transform: perspective(120px) rotateY(0deg);*/
 }
 
-.card:hover .face.front, .card .face.back  {
-  background: url(../img/hogwarts.png) center / cover no-repeat;
+.card .face.front, .card .face.back  {
+  background: url(../img/card_bcg1.png) center / cover no-repeat;
 }
 .flip-front {
   transform: perspective(120px) rotateY(180deg);
 }
 .card .face.back {
-  background: url(../img/hogwarts.png) center / cover no-repeat;
-   transform: perspective(120px) rotateY(180deg);
+  transform: perspective(120px) rotateY(180deg);
 }
-.flip-back {
-  transform: perspective(120px) rotateY(360deg);
-}
-/*.card:hover .face.back {
-  
-}*/
+
 .face.back .card-img {
   backface-visibility: hidden;
   transform: perspective(120px) translateZ(7px);
 }
+.card .face.back.flip-back {
+  transform: perspective(120px) rotateY(360deg);
+}
 .block-0 .wrap:nth-child(1) .card {
-  /* background-color: tomato;
-  opacity: 1;
-  top: 70px;
-  left: 42px;*/
   animation-name: move-block-0-card-1, arise;
 }
 
 @keyframes move-block-0-card-1 {
   0% {
-    top: 70px;
-    left: 42px;
+    top: 88px;
+    left: 88px;
   }
   100% {
-    top: 30px;
-    left: 82px;
+    top: 50px;
+    left: 120px;
   }
 }
-
 .block-0 .wrap:nth-child(2) .card {
   animation-name: move-block-0-card-2, arise;
 }
 
 @keyframes move-block-0-card-2 {
   0% {
-    top: 154px;
-    left: 54px;
+    top: 167px;
+    left: 80px;
   }
   100% {
-    top: 162px;
-    left: 2px;
+    top: 175px;
+    left: 18px;
   }
 }
 .block-0 .wrap:nth-child(3) .card {
@@ -91,12 +82,12 @@
 
 @keyframes move-block-0-card-3 {
   0% {
-    top: 263px;
-    left: 88px;
+    top: 258px;
+    left: 44px;
   }
   100% {
-    top: 322px;
-    left: 109px;
+    top: 346px;
+    left: 67px;
   }
 }
 .block-1 .wrap:nth-child(1) .card {
@@ -104,12 +95,12 @@
 }
 @keyframes move-block-1-card-1 {
   0% {
-    top: 30px;
-    left: 30px;
+    top: 38px;
+    left: 48px;
   }
   100% {
-    top: 1px;
-    left: 85px;
+    top: 15px;
+    left: 105px;
   }
 }
 .block-1 .wrap:nth-child(2) .card {
@@ -117,12 +108,12 @@
 }
 @keyframes move-block-1-card-2 {
   0% {
-    top: 102px;
-    left: 113px;
+    top: 111px;
+    left: 139px;
   }
   100% {
-    top: 123px;
-    left: 55px;
+    top: 133px;
+    left: 79px;
   }
 }
 .block-1 .wrap:nth-child(3) .card {
@@ -130,12 +121,12 @@
 }
 @keyframes move-block-1-card-3 {
   0% {
-    top: 274px;
-    left: 81px;
+    top: 284px;
+    left: 62px;
   }
   100% {
-    top: 333px;
-    left: 106px;
+    top: 334px;
+    left: 96px;
   }
 }
 .block-2 .wrap:nth-child(1) .card {
@@ -143,12 +134,12 @@
 }
 @keyframes move-block-2-card-1 {
   0% {
-    top: 2px;
-    left: 56px;
+    top: 25px;
+    left: 51px;
   }
   100% {
-    top: 54px;
-    left: 95px;
+    top: 74px;
+    left: 85px;
   }
 }
 .block-2 .wrap:nth-child(2) .card {
@@ -156,25 +147,25 @@
 }
 @keyframes move-block-2-card-2 {
   0% {
-    top: 214px;
-    left: 33px;
+    top: 148px;
+    left: 4px;
   }
   100% {
-    top: 176px;
-    left: 86px;
+    top: 121px;
+    left: 42px;
   }
 }
 .block-2 .wrap:nth-child(3) .card {
-  animation-name: move-block-2-card-3, arise;
+ animation-name: move-block-2-card-3, arise;
 }
 @keyframes move-block-2-card-3 {
   0% {
-    top: 281px;
-    left: 69px;
+    top: 289px;
+    left: 88px;
   }
   100% {
-    top: 250px;
-    left: 112px;
+    top: 254px;
+    left: 129px;
   }
 }
 .block-3 .wrap:nth-child(1) .card {
@@ -182,12 +173,12 @@
 }
 @keyframes move-block-3-card-1 {
   0% {
-    top: 30px;
-    left: 24px;
+    top: 49px;
+    left: 63px;
   }
   100% {
-    top: 77px;
-    left: 2px;
+    top: 105px;
+    left: 35px;
   }
 }
 .block-3 .wrap:nth-child(2) .card {
@@ -195,12 +186,12 @@
 }
 @keyframes move-block-3-card-2 {
   0% {
-    top: 165px;
-    left: 137px;
+    top: 180px;
+    left: 134px;
   }
   100% {
-    top: 132px;
-    left: 103px;
+    top: 143px;
+    left: 82px;
   }
 }
 .block-3 .wrap:nth-child(3) .card {
@@ -208,12 +199,12 @@
 }
 @keyframes move-block-3-card-3 {
   0% {
-    top: 266px;
-    left: 2px;
+    top: 300px;
+    left: 26px;
   }
   100% {
-    top: 241px;
-    left: 24px;
+    top: 255px;
+    left: 63px;
   }
 }
 @keyframes arise {
