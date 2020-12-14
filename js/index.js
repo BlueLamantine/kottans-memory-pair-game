@@ -133,25 +133,7 @@ class Game {
       disappear: 520,
     };
     this.cardsNum = 12;
-    this.time = '';
-  }
-
-  timer() {
-    let timer = 0;
-    let hour = 0;
-    let minute = 0;
-    let second = 0;
-      window.setInterval(() => {
-        ++timer;
-        hour = Math.floor(timer / 3600);
-        minute = Math.floor((timer - hour * 3600) / 60);
-        second = timer - hour * 3600 - minute * 60;
-        if (hour < 10) hour = '0' + hour;
-        if (minute < 10) minute = '0' + minute;
-        if (second < 10) second = '0' + second;
-        this.time = `${hour} : ${minute} : ${second}`;
-        document.querySelector('#timer').innerHTML = this.time;
-      }, 1000);
+    this.currentTime = '';
   }
 
   getDisappear(card) {
@@ -163,52 +145,61 @@ class Game {
     card.closest('.card').querySelector('.back').classList.toggle('open');
   }
 
+  gameOver () {
+    document.querySelector('#timer').classList.add('hidden');
+    document.querySelector('#moves-counter').classList.add('hidden');
+    const gameOver = document.createElement('div');
+    gameOver.classList.add('game-over-text');
+    gameOver.innerHTML =
+      `Congratulations!!! You broke the spell! ` +
+      `With ${this.movesCount} moves and your time is ${this.currentTime}.`;
+    document.querySelector('#map').appendChild(gameOver);
+  }
+
   getMatching() {
-    let openedCards = Array.from(
-      document.querySelectorAll('.front.open')
-    );
+    let openedCards = Array.from(document.querySelectorAll('.front.open'));
     let openedCardsNames = openedCards.map(card =>
       card.nextElementSibling.firstElementChild.getAttribute('name')
     );
     if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
       openedCards.forEach(card => {
         setTimeout(this.getFlip, this.animationDelay.flip, card);
-        setTimeout(
-          this.getDisappear,
-          this.animationDelay.disappear,
-          card
-        );
+        setTimeout(this.getDisappear, this.animationDelay.disappear, card);
         this.cardsNum = --this.cardsNum;
-        console.log(this.cardsNum);
-        if(this.cardsNum == 10){
-          window.clearInterval();
-          alert(
-            `Congratulations!!! You broke the spell! ` +
-            `With ${this.movesCount} moves and your time is ${this.time}.`
-          );
+        if (this.cardsNum == 0) {
+          this.gameOver();
         }
-        /*this.matchedCards = Array.from(document.querySelectorAll('.wrap.hidden'));
-        if (this.matchedCards.length == cards) {
-          alert(
-            `Congratulations!!! You broke the spell! ` +
-            `With ${moves} moves and your time is ${time}.`
-          );
-        }*/
       });
     }
   }
 
   closeCards() {
-    let cardsForClose = Array.from(
-      document.querySelectorAll('.front.open')
-    );
+    let cardsForClose = Array.from(document.querySelectorAll('.front.open'));
     cardsForClose.forEach(card => {
       setTimeout(this.getFlip, this.animationDelay.flip, card);
     });
   }
 
+  timerControl() {
+    let timer = 0;
+    let hour = 0;
+    let minute = 0;
+    let second = 0;
+    window.setInterval(() => {
+      ++timer;
+      hour = Math.floor(timer / 3600);
+      minute = Math.floor((timer - hour * 3600) / 60);
+      second = timer - hour * 3600 - minute * 60;
+      if (hour < 10) hour = '0' + hour;
+      if (minute < 10) minute = '0' + minute;
+      if (second < 10) second = '0' + second;
+      this.currentTime = `${hour} : ${minute} : ${second}`;
+      document.querySelector('#timer').innerHTML = this.currentTime;
+    }, 1000);
+  }
+
   startGame() {
-    this.timer();
+    this.timerControl();
 
     this.cards.forEach(e => {
       e.addEventListener('click', e => {

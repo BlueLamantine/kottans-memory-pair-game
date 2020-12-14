@@ -122,3 +122,11 @@ a:hover, .btn:hover {
 .music:hover {
   cursor: url(../img/cursor_pointer.png), pointer;
 }
+.game-over-text {
+  background-color: beige;
+    position: absolute;
+    top: 200px;
+    left: 65px;
+    font-size: 21px;
+    color: black;
+}
