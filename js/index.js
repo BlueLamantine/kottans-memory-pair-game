@@ -127,14 +127,12 @@ class Game {
     this.cards = document.querySelectorAll('.card');
     this.openCardsCount = 0;
     this.movesCount = 0;
-    this.cardMatching = 2;
+    this.maxOpenCards = 2;
     this.animationDelay = {
       flip: 300,
       disappear: 520,
     };
-    this.finishedCards = [];
-    this.allCards = 12;
-    this.timerReady = false;
+    this.cardsNum = 12;
     this.time = '';
   }
 
@@ -143,8 +141,6 @@ class Game {
     let hour = 0;
     let minute = 0;
     let second = 0;
-
-    if (this.timerReady == true) {
       window.setInterval(() => {
         ++timer;
         hour = Math.floor(timer / 3600);
@@ -156,18 +152,10 @@ class Game {
         this.time = `${hour} : ${minute} : ${second}`;
         document.querySelector('#timer').innerHTML = this.time;
       }, 1000);
-    }
   }
 
-  getDisappear(card, moves, time, cards) {
+  getDisappear(card) {
     card.closest('.wrap').classList.add('hidden');
-    this.finishedCards = Array.from(document.querySelectorAll('.wrap.hidden'));
-    if (this.finishedCards.length == cards) {
-      alert(
-        `Congratulations!!! You broke the spell! ` +
-        `With ${moves} moves and your time is ${time}.`
-      );
-    }
   }
 
   getFlip(card) {
@@ -175,46 +163,69 @@ class Game {
     card.closest('.card').querySelector('.back').classList.toggle('open');
   }
 
+  getMatching() {
+    let openedCards = Array.from(
+      document.querySelectorAll('.front.open')
+    );
+    let openedCardsNames = openedCards.map(card =>
+      card.nextElementSibling.firstElementChild.getAttribute('name')
+    );
+    if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
+      openedCards.forEach(card => {
+        setTimeout(this.getFlip, this.animationDelay.flip, card);
+        setTimeout(
+          this.getDisappear,
+          this.animationDelay.disappear,
+          card
+        );
+        this.cardsNum = --this.cardsNum;
+        console.log(this.cardsNum);
+        if(this.cardsNum == 10){
+          window.clearInterval();
+          alert(
+            `Congratulations!!! You broke the spell! ` +
+            `With ${this.movesCount} moves and your time is ${this.time}.`
+          );
+        }
+        /*this.matchedCards = Array.from(document.querySelectorAll('.wrap.hidden'));
+        if (this.matchedCards.length == cards) {
+          alert(
+            `Congratulations!!! You broke the spell! ` +
+            `With ${moves} moves and your time is ${time}.`
+          );
+        }*/
+      });
+    }
+  }
+
+  closeCards() {
+    let cardsForClose = Array.from(
+      document.querySelectorAll('.front.open')
+    );
+    cardsForClose.forEach(card => {
+      setTimeout(this.getFlip, this.animationDelay.flip, card);
+    });
+  }
+
   startGame() {
-    this.timerReady = true;
     this.timer();
+
     this.cards.forEach(e => {
       e.addEventListener('click', e => {
         e.preventDefault();
+
         this.movesCount++;
         const currentCard = e.target;
         this.openCardsCount++;
-        if (this.openCardsCount <= this.cardMatching) {
-          this.movesCount--;
+
+        if (this.openCardsCount <= this.maxOpenCards) {
           this.getFlip(currentCard);
-          if (this.openCardsCount == this.cardMatching) {
-            let openedCards = Array.from(
-              document.querySelectorAll('.front.open')
-            );
-            let openedCardsNames = openedCards.map(card =>
-              card.nextElementSibling.firstElementChild.getAttribute('name')
-            );
-            if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
-              openedCards.forEach(card => {
-                setTimeout(this.getFlip, this.animationDelay.flip, card);
-                setTimeout(
-                  this.getDisappear,
-                  this.animationDelay.disappear,
-                  card,
-                  this.movesCount,
-                  this.time,
-                  this.allCards
-                );
-              });
-            }
+
+          if (this.openCardsCount == this.maxOpenCards) {
+            this.getMatching();
           }
         } else {
-          let openedCards = Array.from(
-            document.querySelectorAll('.front.open')
-          );
-          openedCards.forEach(card => {
-            setTimeout(this.getFlip, this.animationDelay.flip, card);
-          });
+          this.closeCards();
           this.getFlip(currentCard);
           this.openCardsCount = 1;
         }
