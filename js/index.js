@@ -14,19 +14,18 @@ class General {
     this.gameTheme.play();
 
     document.querySelector('#musicControl').addEventListener('click', e => {
-      e.preventDefault();
+      const volume = e.target.classList;
       if (this.gameTheme.muted) {
         this.gameTheme.muted = false;
-        e.target.classList.replace('fa-volume-off', 'fa-volume-up');
+        volume.replace('fa-volume-off', 'fa-volume-up');
       } else {
         this.gameTheme.muted = true;
-        e.target.classList.replace('fa-volume-up', 'fa-volume-off');
+        volume.replace('fa-volume-up', 'fa-volume-off');
       }
     });
   }
   setGameGonfig() {
     this.startButton.addEventListener('click', e => {
-      e.preventDefault();
       this.startButton.classList.add('hidden');
       document
         .querySelector('#modal')
@@ -78,9 +77,7 @@ class Render {
   }
 
   shuffleCards() {
-    const shuffleArray = this.cardsArray.concat(this.cardsArray).sort(() => {
-      return 0.5 - Math.random();
-    });
+    const shuffleArray = this.cardsArray.concat(this.cardsArray).sort(() => 0.5 - Math.random());
     const cardsBack = document.querySelectorAll('.back');
     shuffleArray.forEach((data, cardIndex) => {
       cardsBack[cardIndex].innerHTML = `
@@ -97,7 +94,7 @@ class Render {
     return template;
   }
 
-  renderBlock() {
+  renderBlockOfMap() {
     let template = ``;
     for (let i = 0; i < this.cardsInBlock; i++) {
       template += `
@@ -115,16 +112,14 @@ class Render {
   }
 
   renderCards() {
-    this.areas.forEach(block => {
-      block.innerHTML = this.renderBlock();
-    });
+    this.areas.forEach(block => block.innerHTML = this.renderBlockOfMap());
     this.shuffleCards();
   }
 }
 
 class Game {
   constructor() {
-    this.cards = document.querySelectorAll('.card');
+    this.map = document.querySelector('#map');
     this.openCardsCount = 0;
     this.movesCount = 0;
     this.maxOpenCards = 2;
@@ -134,6 +129,8 @@ class Game {
     };
     this.cardsNum = 12;
     this.currentTime = '';
+    this.gameTime = document.querySelector('#timer');
+    this.counter =  document.querySelector('#counter');
   }
 
   getDisappear(card) {
@@ -151,14 +148,14 @@ class Game {
     const gameOver = document.createElement('div');
     gameOver.classList.add('game-over-text');
     gameOver.innerHTML =
-      `Congratulations!!! You broke the spell! ` +
-      `With ${this.movesCount} moves and your time is ${this.currentTime}.`;
+      `Congratulations!!! You broke the spell! 
+       With ${this.movesCount} moves and your time is ${this.currentTime}.`;
     document.querySelector('#map').appendChild(gameOver);
   }
 
   getMatching() {
-    let openedCards = Array.from(document.querySelectorAll('.front.open'));
-    let openedCardsNames = openedCards.map(card =>
+    const openedCards = Array.from(document.querySelectorAll('.front.open'));
+    const openedCardsNames = openedCards.map(card =>
       card.nextElementSibling.firstElementChild.getAttribute('name')
     );
     if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
@@ -174,7 +171,7 @@ class Game {
   }
 
   closeCards() {
-    let cardsForClose = Array.from(document.querySelectorAll('.front.open'));
+    const cardsForClose = Array.from(document.querySelectorAll('.front.open'));
     cardsForClose.forEach(card => {
       setTimeout(this.getFlip, this.animationDelay.flip, card);
     });
@@ -194,17 +191,14 @@ class Game {
       if (minute < 10) minute = '0' + minute;
       if (second < 10) second = '0' + second;
       this.currentTime = `${hour} : ${minute} : ${second}`;
-      document.querySelector('#timer').innerHTML = this.currentTime;
+      this.gameTime.innerHTML = this.currentTime;
     }, 1000);
   }
 
   startGame() {
     this.timerControl();
-
-    this.cards.forEach(e => {
-      e.addEventListener('click', e => {
-        e.preventDefault();
-
+    this.map.addEventListener('click', e => {
+      if(e.target.classList.contains('front')){
         this.movesCount++;
         const currentCard = e.target;
         this.openCardsCount++;
@@ -220,8 +214,8 @@ class Game {
           this.getFlip(currentCard);
           this.openCardsCount = 1;
         }
-        document.querySelector('#counter').innerText = this.movesCount;
-      });
+       this.counter.innerText = this.movesCount;
+      }
     });
   }
 }
