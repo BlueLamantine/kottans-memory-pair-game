@@ -149,13 +149,13 @@ class Game {
     gameOver.innerHTML =
       `Congratulations!!! You broke the spell! 
        With ${this.movesCount} moves and your time is ${this.currentTime}.`;
-    document.querySelector('#map').appendChild(gameOver);
+    this.map.appendChild(gameOver);
   }
 
   getMatching() {
     const openedCards = Array.from(document.querySelectorAll('.front.open'));
-    const openedCardsNames = openedCards.map(card =>
-      card.nextElementSibling.firstElementChild.getAttribute('name')
+    const openedCardsNames = openedCards.map(card => 
+      card.closest('.card').querySelector('img').getAttribute('name')
     );
     if (openedCardsNames.every((name, i, arr) => name === arr[0])) {
       openedCards.forEach(card => {
